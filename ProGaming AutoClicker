@@ -1,0 +1,33 @@
+#include <windows.h>
+
+void LeftClick()
+{
+    INPUT    Input = { 0 };
+    // left down 
+    Input.type = INPUT_MOUSE;
+    Input.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
+    ::SendInput(1, &Input, sizeof(INPUT));
+
+    // left up
+    ::ZeroMemory(&Input, sizeof(INPUT));
+    Input.type = INPUT_MOUSE;
+    Input.mi.dwFlags = MOUSEEVENTF_LEFTUP;
+    ::SendInput(1, &Input, sizeof(INPUT));
+}
+
+int main()
+{
+    while (true) {
+        bool leftClick = false;
+        if (GetAsyncKeyState(VK_UP)) {
+            leftClick = true;
+        }
+        while (leftClick == true) {
+            LeftClick();
+            Sleep(10);
+            if (GetAsyncKeyState(VK_DOWN)) {
+                leftClick = false;
+            }
+        }
+    }
+}
